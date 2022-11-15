@@ -1,0 +1,162 @@
+openapi: 3.0.1
+info:
+  title: recipe-api
+  version: 0.0.1
+servers:
+  - url: http://localhost:8081/
+paths:
+  /recipes:
+    get:
+      tags:
+        - recipe
+      summary: getRecipes
+      operationId: getRecipesUsingGET
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+      deprecated: false
+      security:
+        - bearerAuth: [ ]
+    post:
+      tags:
+        - recipe
+      summary: createRecipe
+      operationId: createRecipeUsingPOST
+      requestBody:
+        description: recipe
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        400:
+          description: Bad Request
+          content: { }
+        404:
+          description: Not Found
+          content: { }
+      deprecated: false
+      security:
+        - bearerAuth: [ ]
+      x-codegen-request-body-name: recipe
+  /recipe/{id}:
+    put:
+      tags:
+        - recipe
+      summary: updateRecipe
+      operationId: updateRecipeUsingPUT
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: recipe
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        400:
+          description: Bad Request
+          content: { }
+        404:
+          description: Not Found
+          content: { }
+      deprecated: false
+      security:
+        - bearerAuth: [ ]
+      x-codegen-request-body-name: recipe
+    delete:
+      tags:
+        - recipe
+      summary: deleteRecipe
+      operationId: deleteRecipeUsingDELETE
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        204:
+          description: No Content
+        404:
+          description: Not Found
+          content: { }
+      deprecated: false
+      security:
+        - bearerAuth: [ ]
+
+components:
+  schemas:
+    Recipe:
+      title: Recipe
+      required:
+        - name
+        - recipeType
+        - servings
+        - instructions
+        - ingredients
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        recipeType:
+          type: string
+          enum:
+            - ANIMAL_BASED
+            - VEGETARIAN
+        servings:
+          type: integer
+        instructions:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+
+    Ingredient:
+      title: Ingredient
+      required:
+        - settings
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: number
+        unitOfMeasure:
+          type: string
+          enum:
+            - ITEM
+            - CUPS
+            - TEASPOON
+            - GRAMS
+            - MILLILITERS

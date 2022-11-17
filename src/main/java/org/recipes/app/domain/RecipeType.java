@@ -1,5 +1,5 @@
 package org.recipes.app.domain;
 
 public enum RecipeType {
-    ANIMAL_BASED, VEGETARIAN
+    NON_VEGETARIAN, VEGETARIAN
 }

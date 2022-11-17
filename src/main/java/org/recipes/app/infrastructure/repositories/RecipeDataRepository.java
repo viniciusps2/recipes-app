@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.recipes.app.domain.Recipe;
 import org.recipes.app.domain.repositories.RecipeRepository;
 import org.recipes.app.domain.repositories.RecipeSearch;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -33,6 +34,16 @@ public class RecipeDataRepository implements RecipeRepository {
     @Override
     public List<Recipe> search(RecipeSearch search) {
         var searchSpec = new RecipeSearchSpecification(search);
-        return recipeJpaRepository.findAll(searchSpec);
+        return recipeJpaRepository.findAll(searchSpec, Sort.by(Sort.Direction.ASC, "name"));
+    }
+
+    @Override
+    public void saveAll(List<Recipe> recipes) {
+        recipeJpaRepository.saveAll(recipes);
+    }
+
+    @Override
+    public void deleteAll() {
+        recipeJpaRepository.deleteAll();
     }
 }

@@ -1,15 +1,15 @@
 package org.recipes.app.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -20,10 +20,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Builder
 @Accessors(fluent = true, chain = true)
-@NoArgsConstructor
-@AllArgsConstructor
 public class Recipe {
     @Id
     @Setter(AccessLevel.NONE)
@@ -33,19 +30,22 @@ public class Recipe {
     private String name;
     private RecipeType recipeType;
     private int servings;
+
+    @Column(columnDefinition = "text")
     private String instructions;
 
     @Builder.Default
-    @OneToMany(mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 
-    public void ingredients(List<RecipeIngredient> ingredients) {
+    public Recipe ingredients(List<RecipeIngredient> ingredients) {
         this.ingredients.clear();
         if (ingredients == null) {
-            return;
+            return this;
         }
         this.ingredients.addAll(ingredients);
         this.ingredients.forEach(i -> i.recipe(this));
+        return this;
     }
 
     public List<RecipeIngredient> ingredients() {

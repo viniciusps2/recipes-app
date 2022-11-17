@@ -1,11 +1,13 @@
 package org.recipes.app.domain.repositories;
 
+import lombok.Builder;
 import org.recipes.app.domain.RecipeType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Builder
 public record RecipeSearch(
         RecipeType recipeType,
         Integer servings,
@@ -17,12 +19,17 @@ public record RecipeSearch(
     public RecipeSearch {
         ingredientsIncludes = sanitizeList(ingredientsIncludes);
         ingredientsExcludes = sanitizeList(ingredientsExcludes);
+        instructionsContains = sanitizeString(instructionsContains);
     }
 
     private List<String> sanitizeList(List<String> list) {
         if (list == null || list.isEmpty()) {
             return new ArrayList<>();
         }
-        return list.stream().map(i -> i.trim().toLowerCase()).collect(Collectors.toList());
+        return list.stream().map(RecipeSearch::sanitizeString).collect(Collectors.toList());
+    }
+
+    private static String sanitizeString(String s) {
+        return s == null ? null : s.trim().toLowerCase();
     }
 }

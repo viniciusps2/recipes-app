@@ -8,10 +8,9 @@ import java.util.UUID;
 
 public interface RecipeRepository {
     Recipe save(Recipe recipe);
-
     Optional<Recipe> findById(UUID id);
-
     void delete(Recipe recipe);
-
     List<Recipe> search(RecipeSearch recipeSearch);
+    void saveAll(List<Recipe> recipes);
+    void deleteAll();
 }

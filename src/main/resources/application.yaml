@@ -1,3 +1,6 @@
+server:
+  port: 8082
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -6,8 +9,10 @@ spring:
     username: postgres
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-server:
-  port: 8081
+    show-sql: true
+springdoc:
+  packages-to-scan: "org.recipes.app"
+  pathsToMatch: /**

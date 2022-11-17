@@ -3,14 +3,44 @@ info:
   title: recipe-api
   version: 0.0.1
 servers:
-  - url: http://localhost:8081/
+  - url: http://localhost:8082/
 paths:
   /recipes:
     get:
       tags:
-        - recipe
-      summary: getRecipes
-      operationId: getRecipesUsingGET
+        - recipes
+      summary: searchRecipes
+      operationId: searchRecipes
+      parameters:
+        - in: query
+          name: recipeType
+          schema:
+            $ref: '#/components/schemas/RecipeType'
+          description: The recipe type (e.g. VEGETARIAN, OR NON_VEGETARIAN)
+        - in: query
+          name: servings
+          schema:
+            type: integer
+          description: The number of servings
+        - in: query
+          name: ingredientsIncludes
+          schema:
+            type: array
+            items:
+              type: string
+          description: Contains text in the ingredients
+        - in: query
+          name: ingredientsExcludes
+          schema:
+            type: array
+            items:
+              type: string
+          description: Contains text in the ingredients
+        - in: query
+          name: instructionsContains
+          schema:
+            type: string
+          description: Contains text in the instructions
       responses:
         200:
           description: OK
@@ -20,14 +50,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Recipe'
-      deprecated: false
-      security:
-        - bearerAuth: [ ]
     post:
       tags:
-        - recipe
+        - recipes
       summary: createRecipe
-      operationId: createRecipeUsingPOST
+      operationId: createRecipe
       requestBody:
         description: recipe
         content:
@@ -44,20 +71,33 @@ paths:
                 $ref: '#/components/schemas/Recipe'
         400:
           description: Bad Request
-          content: { }
         404:
           description: Not Found
-          content: { }
-      deprecated: false
-      security:
-        - bearerAuth: [ ]
-      x-codegen-request-body-name: recipe
-  /recipe/{id}:
+  /recipes/{id}:
+    get:
+      tags:
+        - recipes
+      summary: getRecipe
+      operationId: getRecipe
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
     put:
       tags:
-        - recipe
+        - recipes
       summary: updateRecipe
-      operationId: updateRecipeUsingPUT
+      operationId: updateRecipe
       parameters:
         - name: id
           in: path
@@ -81,19 +121,13 @@ paths:
                 $ref: '#/components/schemas/Recipe'
         400:
           description: Bad Request
-          content: { }
         404:
           description: Not Found
-          content: { }
-      deprecated: false
-      security:
-        - bearerAuth: [ ]
-      x-codegen-request-body-name: recipe
     delete:
       tags:
-        - recipe
+        - recipes
       summary: deleteRecipe
-      operationId: deleteRecipeUsingDELETE
+      operationId: deleteRecipe
       parameters:
         - name: id
           in: path
@@ -106,11 +140,21 @@ paths:
           description: No Content
         404:
           description: Not Found
-          content: { }
-      deprecated: false
-      security:
-        - bearerAuth: [ ]
-
+#  /ingredients:
+#    get:
+#      tags:
+#        - ingredients
+#      summary: searchIngredients
+#      operationId: searchIngredients
+#      responses:
+#        200:
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: '#/components/schemas/Ingredient'
 components:
   schemas:
     Recipe:
@@ -129,10 +173,7 @@ components:
         name:
           type: string
         recipeType:
-          type: string
-          enum:
-            - ANIMAL_BASED
-            - VEGETARIAN
+          $ref: '#/components/schemas/RecipeType'
         servings:
           type: integer
         instructions:
@@ -140,12 +181,12 @@ components:
         ingredients:
           type: array
           items:
-            $ref: '#/components/schemas/Ingredient'
+            $ref: '#/components/schemas/RecipeIngredient'
 
-    Ingredient:
-      title: Ingredient
+    RecipeIngredient:
+      title: Recipe Ingredient
       required:
-        - settings
+        - ingredient
       type: object
       properties:
         name:
@@ -153,10 +194,33 @@ components:
         quantity:
           type: number
         unitOfMeasure:
-          type: string
-          enum:
-            - ITEM
-            - CUPS
-            - TEASPOON
-            - GRAMS
-            - MILLILITERS
+          $ref: '#/components/schemas/UnitOfMeasure'
+
+    UnitOfMeasure:
+      title: Unit of Measure
+      type: string
+      enum:
+        - ITEM
+        - CUPS
+        - TEASPOON
+        - GRAMS
+        - MILLILITERS
+
+#    Ingredient:
+#      title: Ingredient
+#      required:
+#        - name
+#      type: object
+#      properties:
+#        id:
+#          type: string
+#          format: uuid
+#        name:
+#          type: string
+
+    RecipeType:
+      title: Recipe Type
+      type: string
+      enum:
+        - NON_VEGETARIAN
+        - VEGETARIAN

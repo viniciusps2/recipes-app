@@ -140,21 +140,21 @@ paths:
           description: No Content
         404:
           description: Not Found
-#  /ingredients:
-#    get:
-#      tags:
-#        - ingredients
-#      summary: searchIngredients
-#      operationId: searchIngredients
-#      responses:
-#        200:
-#          description: OK
-#          content:
-#            application/json:
-#              schema:
-#                type: array
-#                items:
-#                  $ref: '#/components/schemas/Ingredient'
+  /ingredients:
+    get:
+      tags:
+        - ingredients
+      summary: listIngredients
+      operationId: listIngredients
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
 components:
   schemas:
     Recipe:
@@ -206,14 +206,14 @@ components:
         - GRAMS
         - MILLILITERS
 
-#    Ingredient:
-#      title: Ingredient
-#      required:
-#        - name
-#      type: object
-#      properties:
-#        name:
-#          type: string
+    Ingredient:
+      title: Ingredient
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
 
     RecipeType:
       title: Recipe Type

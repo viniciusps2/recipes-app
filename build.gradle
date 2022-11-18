@@ -2,8 +2,9 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.5'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id "io.freefair.lombok" version "6.5.1"
-	id "org.openapi.generator" version "6.2.1"
+	id 'io.freefair.lombok' version '6.5.1'
+	id 'org.openapi.generator' version '6.2.1'
+	id 'jacoco'
 }
 
 group = 'org.recipes'
@@ -35,26 +36,51 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'com.h2database:h2'
 	testImplementation 'org.mockito:mockito-core:4.8.1'
+	testImplementation 'org.assertj:assertj-core:3.23.1'
 }
 
-tasks.named('test') {
+test {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	dependsOn test
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: ['**/org/recipes/spec/**'])
+		}))
+	}
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.90
+			}
+		}
+	}
+	afterEvaluate {
+		classDirectories.setFrom(jacocoTestReport.classDirectories)
+	}
 }
 
 openApiGenerate {
-	generatorName = "spring"
+	generatorName = 'spring'
 	inputSpec = "$rootDir/src/main/resources/static/recipes-api-spec.yaml".toString()
 	outputDir = "$buildDir/generated".toString()
 
-	apiPackage = "org.recipes.spec.api"
-	invokerPackage = "org.recipes.spec.invoker"
-	modelPackage = "org.recipes.spec.model"
-	modelNameSuffix = "DTO"
+	apiPackage = 'org.recipes.spec.api'
+	invokerPackage = 'org.recipes.spec.invoker'
+	modelPackage = 'org.recipes.spec.model'
+	modelNameSuffix = 'DTO'
 	configOptions = [
-			configPackage: "org.recipes.app.infrastructure.openapi",
-			dateLibrary: "java8",
-			interfaceOnly: "true",
-			skipDefaultInterface: "true",
+			configPackage: 'org.recipes.app.infrastructure.openapi',
+			dateLibrary: 'java8',
+			interfaceOnly: 'true',
+			skipDefaultInterface: 'true',
 	]
 }
 

@@ -1,7 +1,6 @@
 package org.recipes.app.domain;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -20,7 +19,6 @@ import java.util.UUID;
 public class RecipeIngredient {
     @Id
     @Setter(AccessLevel.NONE)
-    @Builder.Default
     private UUID id = UUID.randomUUID();
 
     @Setter

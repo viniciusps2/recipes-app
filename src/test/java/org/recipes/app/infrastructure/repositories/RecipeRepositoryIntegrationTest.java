@@ -2,6 +2,7 @@ package org.recipes.app.infrastructure.repositories;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class RecipeSearchIT {
+class RecipeRepositoryIntegrationTest {
     @Autowired
     private RecipeDataRepository repository;
 
@@ -153,5 +154,11 @@ class RecipeSearchIT {
                 Arguments.of(List.of("A"), 1),
                 Arguments.of(List.of("B"), 2)
         );
+    }
+
+    @Test
+    void shouldListAllIngredientNames() {
+        var result = repository.findAllIngredientNames();
+        assertEquals(List.of("One", "Three", "Two"), result);
     }
 }

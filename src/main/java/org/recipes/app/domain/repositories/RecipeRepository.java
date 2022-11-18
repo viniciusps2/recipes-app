@@ -13,4 +13,6 @@ public interface RecipeRepository {
     List<Recipe> search(RecipeSearch recipeSearch);
     void saveAll(List<Recipe> recipes);
     void deleteAll();
+
+    List<String> findAllIngredientNames();
 }

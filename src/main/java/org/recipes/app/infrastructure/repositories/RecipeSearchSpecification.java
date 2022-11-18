@@ -1,8 +1,8 @@
 package org.recipes.app.infrastructure.repositories;
 
 import lombok.AllArgsConstructor;
-import org.recipes.app.domain.RecipeIngredient;
 import org.recipes.app.domain.Recipe;
+import org.recipes.app.domain.RecipeIngredient;
 import org.recipes.app.domain.repositories.RecipeSearch;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
@@ -13,7 +13,6 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
-
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -28,7 +27,8 @@ public class RecipeSearchSpecification implements Specification<Recipe> {
                 .and(hasRecipeType())
                 .and(ingredientsExcludes())
                 .and(ingredientsIncludes())
-                .and(instructionsContains()).toPredicate(r,q,cb);
+                .and(instructionsContains())
+                .toPredicate(r,q,cb);
     }
 
     private Specification<Recipe> hasServings() {

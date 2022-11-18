@@ -5,6 +5,7 @@ import org.recipes.app.domain.Recipe;
 import org.recipes.app.domain.RecipeIngredient;
 import org.recipes.app.domain.RecipeType;
 import org.recipes.app.domain.UnitOfMeasure;
+import org.recipes.spec.model.IngredientDTO;
 import org.recipes.spec.model.RecipeDTO;
 import org.recipes.spec.model.RecipeIngredientDTO;
 import org.recipes.spec.model.RecipeTypeDTO;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @AllArgsConstructor
@@ -76,5 +78,10 @@ public class RecipeMapper {
     public List<RecipeDTO> toDTOList(List<Recipe> recipes) {
         return recipes == null ? Collections.emptyList() :
                 recipes.stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    public List<IngredientDTO> toIngredientNameDTO(List<String> names) {
+        return names.stream()
+                .map(name -> new IngredientDTO().name(name)).collect(toList());
     }
 }

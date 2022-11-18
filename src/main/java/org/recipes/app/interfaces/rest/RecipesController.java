@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Optional.ofNullable;
@@ -22,7 +21,7 @@ import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @AllArgsConstructor
-public class RecipeController implements RecipesApi {
+public class RecipesController implements RecipesApi {
     private final RecipeService recipeService;
 
     @Override

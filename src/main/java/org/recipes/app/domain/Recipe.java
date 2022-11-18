@@ -1,7 +1,6 @@
 package org.recipes.app.domain;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -24,8 +23,7 @@ import java.util.UUID;
 public class Recipe {
     @Id
     @Setter(AccessLevel.NONE)
-    @Builder.Default
-    private UUID id = UUID.randomUUID();
+    private final UUID id;
 
     private String name;
     private RecipeType recipeType;
@@ -34,9 +32,16 @@ public class Recipe {
     @Column(columnDefinition = "text")
     private String instructions;
 
-    @Builder.Default
     @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<RecipeIngredient> ingredients = new ArrayList<>();
+
+    public Recipe() {
+         id = UUID.randomUUID();
+    }
+
+    public Recipe(UUID id) {
+        this.id = id;
+    }
 
     public Recipe ingredients(List<RecipeIngredient> ingredients) {
         this.ingredients.clear();

@@ -1,6 +1,9 @@
 package org.recipes.app.interfaces.rest;
 
+import org.recipes.app.application.errors.NotFoundException;
+import org.recipes.app.interfaces.dto.ErrorDTO;
 import org.recipes.app.interfaces.dto.ValidationErrorDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -9,17 +12,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import static org.springframework.http.ResponseEntity.badRequest;
-import static org.springframework.http.ResponseEntity.notFound;
+import static org.springframework.http.ResponseEntity.status;
 
 @ControllerAdvice
-public class ValidationControllerAdvise {
+public class ErrorControllerAdvise {
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ValidationErrorDTO> handleNoSuchElement(NoSuchElementException ex) {
-        return notFound().build();
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorDTO> handleNoSuchElement(NotFoundException ex) {
+        var dto = new ErrorDTO(ex.getMessage());
+        return status(HttpStatus.NOT_FOUND).body(dto);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -30,7 +33,7 @@ public class ValidationControllerAdvise {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        ValidationErrorDTO error = new ValidationErrorDTO("Error on validating fields.", errors);
-        return badRequest().body(error);
+        var dto = new ValidationErrorDTO("Error on validating fields.", errors);
+        return badRequest().body(dto);
     }
 }

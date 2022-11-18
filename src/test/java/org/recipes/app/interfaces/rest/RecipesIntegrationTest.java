@@ -1,4 +1,4 @@
-package org.recipes.app;
+package org.recipes.app.interfaces.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -26,6 +26,8 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.recipes.app.interfaces.rest.RecipeFixture.recipe;
+import static org.recipes.app.interfaces.rest.RecipeFixture.recipeDTO;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -35,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-class RecipesIntegrationIT {
+class RecipesIntegrationTest {
 	@Autowired
 	private MockMvc mvc;
 
@@ -74,6 +76,11 @@ class RecipesIntegrationIT {
 	}
 
 	@Test
+	void whenRecipeNotFoundShouldFail() throws Exception {
+		mvc.perform(get("/recipes/" + UUID.randomUUID())).andExpect(status().isNotFound());
+	}
+
+	@Test
 	void shouldCreateRecipe() throws Exception {
 		mvc.perform(post("/recipes")
 						.content(mapper.writeValueAsString(recipeDTO("d")))
@@ -82,6 +89,13 @@ class RecipesIntegrationIT {
 				.andExpect(jsonPath("$.name", equalTo("d")));
 	}
 
+	@Test
+	void whenCreatingRecipeAndFieldsAreMissingShouldFail() throws Exception {
+		mvc.perform(post("/recipes")
+						.content(mapper.writeValueAsString(recipeDTO(null)))
+						.contentType(MediaType.APPLICATION_JSON)
+				).andExpect(status().isBadRequest());
+	}
 	@Test
 	void shouldUpdateRecipe() throws Exception {
 		UUID id = savedRecipes.get(0).id();
@@ -96,43 +110,14 @@ class RecipesIntegrationIT {
 				.andExpect(jsonPath("$.name", equalTo(newName)));
 	}
 
-	private Recipe recipe(String name) {
-		return new Recipe()
-				.name(name)
-				.recipeType(RecipeType.NON_VEGETARIAN)
-				.servings(8)
-				.ingredients(List.of(
-						new RecipeIngredient().name("Flour")
-								.quantity(BigDecimal.valueOf(2.0)).unitOfMeasure(UnitOfMeasure.CUPS),
-						new RecipeIngredient().name("Sugar")
-								.quantity(BigDecimal.valueOf(1.0)).unitOfMeasure(UnitOfMeasure.CUPS),
-						new RecipeIngredient().name("Baking soda")
-								.quantity(BigDecimal.valueOf(0.5)).unitOfMeasure(UnitOfMeasure.TEASPOON),
-						new RecipeIngredient().name("Eggs")
-								.quantity(BigDecimal.valueOf(2.0)).unitOfMeasure(UnitOfMeasure.ITEM)
-				))
-				.instructions("Preheat oven to 350°. In a large bowl, stir together flour, sugar, baking soda and salt. In another bowl, combine the eggs, bananas, oil, buttermilk and vanilla; add to flour mixture, stirring just until combined. Fold in nuts.\n" +
-						"Pour into a greased or parchment-lined 9x5-in. loaf pan. If desired, sprinkle with additional walnuts. Bake until a toothpick comes out clean, 1-1/4 to 1-1/2 hours. Cool in pan for 15 minutes before removing to a wire rack.");
+	@Test
+	void whenUpdatingRecipeAndFieldsAreMissingShouldFail() throws Exception {
+		UUID id = savedRecipes.get(0).id();
+		mvc.perform(put("/recipes/" + id)
+						.content(mapper.writeValueAsString(recipeDTO(null)))
+						.contentType(MediaType.APPLICATION_JSON)
+				).andExpect(status().isBadRequest());
 	}
 
-
-	private RecipeDTO recipeDTO(String name) {
-		return new RecipeDTO()
-				.name(name)
-				.recipeType(RecipeTypeDTO.NON_VEGETARIAN)
-				.servings(8)
-				.ingredients(List.of(
-						new RecipeIngredientDTO().name("Flour")
-								.quantity(BigDecimal.valueOf(2.0)).unitOfMeasure(UnitOfMeasureDTO.CUPS),
-						new RecipeIngredientDTO().name("Sugar")
-								.quantity(BigDecimal.valueOf(1.0)).unitOfMeasure(UnitOfMeasureDTO.CUPS),
-						new RecipeIngredientDTO().name("Baking soda")
-								.quantity(BigDecimal.valueOf(0.5)).unitOfMeasure(UnitOfMeasureDTO.TEASPOON),
-						new RecipeIngredientDTO().name("Eggs")
-								.quantity(BigDecimal.valueOf(2.0)).unitOfMeasure(UnitOfMeasureDTO.ITEM)
-				))
-				.instructions("Preheat oven to 350°. In a large bowl, stir together flour, sugar, baking soda and salt. In another bowl, combine the eggs, bananas, oil, buttermilk and vanilla; add to flour mixture, stirring just until combined. Fold in nuts.\n" +
-						"Pour into a greased or parchment-lined 9x5-in. loaf pan. If desired, sprinkle with additional walnuts. Bake until a toothpick comes out clean, 1-1/4 to 1-1/2 hours. Cool in pan for 15 minutes before removing to a wire rack.");
-	}
 
 }

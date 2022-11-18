@@ -5,25 +5,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.recipes.app.application.errors.NotFoundException;
 import org.recipes.app.application.mappers.RecipeMapper;
 import org.recipes.app.domain.Recipe;
-import org.recipes.app.domain.RecipeIngredient;
 import org.recipes.app.domain.RecipeType;
-import org.recipes.app.domain.UnitOfMeasure;
 import org.recipes.app.domain.repositories.RecipeRepository;
 import org.recipes.app.domain.repositories.RecipeSearch;
 import org.recipes.spec.model.RecipeDTO;
-import org.recipes.spec.model.RecipeIngredientDTO;
-import org.recipes.spec.model.RecipeTypeDTO;
-import org.recipes.spec.model.UnitOfMeasureDTO;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
-import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
@@ -66,7 +59,7 @@ class RecipeServiceTest {
     void whenRecipeIsNotPresentShouldThrow() {
         UUID id = UUID.randomUUID();
         when(recipeRepository.findById(id)).thenReturn(Optional.empty());
-        assertThrows(NoSuchElementException.class, () -> recipeService.getRecipe(id));
+        assertThrows(NotFoundException.class, () -> recipeService.getRecipe(id));
     }
 
     @Test

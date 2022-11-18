@@ -63,7 +63,7 @@ The application provides the following endpoints:
 
 Find more details in the [OpenAPI spec here](src/main/resources/static/recipes-api-spec.yaml), or in the Swagger UI by running the application.
 
-## Further improvements
+## Next steps
 
 - Use Zalando Problem specification to standardize error responses
 - Configure a database versioning tool (e.g. Flyway)

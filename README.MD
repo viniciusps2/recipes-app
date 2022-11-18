@@ -18,7 +18,7 @@ In another terminal execute this command:
 ./gradlew bootRun
 ```
 
-Open your brower on: http://localhost:8080
+Open your browser on: http://localhost:8080
 
 This is a Swagger page where you can call the API.
 
@@ -30,7 +30,7 @@ Execute in your terminal: `./gradlew build`
 
 ### Clean Architecture
 
-This project was created following a Clean Architecture aproach, where the code is organised in such a way that it encapsulates the business logic to isolate it from external factors.
+This project was created following a Clean Architecture approach, where the code is organised in such a way that it encapsulates the business logic to isolate it from external factors.
 
 The domain logic goes in the inner part, and should not depend on other layers. The main rule is: code on the inner layers can have no knowledge of functions on the outer layers.
 

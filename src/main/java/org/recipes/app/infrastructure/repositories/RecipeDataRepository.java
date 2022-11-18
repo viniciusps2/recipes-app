@@ -49,7 +49,6 @@ public class RecipeDataRepository implements RecipeRepository {
 
     @Override
     public List<String> findAllIngredientNames() {
-//        Sort sort = Sort.by(Sort.Direction.ASC, "ingredients.name");
         return recipeJpaRepository.findAllIngredientNames();
     }
 }

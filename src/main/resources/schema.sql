@@ -1,7 +1,6 @@
 create table if not exists recipe
 (
-    id           uuid    not null
-        primary key,
+    id           uuid    not null primary key,
     instructions text,
     name         varchar(255),
     recipe_type  integer,
@@ -10,8 +9,7 @@ create table if not exists recipe
 
 create table if not exists recipe_ingredient
 (
-    id              uuid not null
-        primary key,
+    id              uuid not null primary key,
     name            varchar(255),
     quantity        numeric(19, 2),
     unit_of_measure integer,

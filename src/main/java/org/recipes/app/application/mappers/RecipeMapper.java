@@ -14,10 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
 
 @Service
 @AllArgsConstructor
@@ -25,17 +23,17 @@ public class RecipeMapper {
 
     public Recipe toEntity(RecipeDTO dto) {
         Recipe r = new Recipe();
-        toEntity(dto, r);
+        updateEntity(dto, r);
         return r;
     }
 
-    public void toEntity(RecipeDTO dto, Recipe r) {
+    public void updateEntity(RecipeDTO dto, Recipe r) {
         r.name(dto.getName())
-            .recipeType(ofNullable(dto.getRecipeType())
-                .map(RecipeTypeDTO::getValue).map(RecipeType::valueOf).orElse(null))
-            .servings(dto.getServings())
-            .instructions(dto.getInstructions())
-            .ingredients(toEntityList(dto.getIngredients()));
+                .recipeType(ofNullable(dto.getRecipeType())
+                        .map(RecipeTypeDTO::getValue).map(RecipeType::valueOf).orElse(null))
+                .servings(dto.getServings())
+                .instructions(dto.getInstructions())
+                .ingredients(toEntityList(dto.getIngredients()));
     }
 
     public RecipeDTO toDTO(Recipe r) {
@@ -51,7 +49,7 @@ public class RecipeMapper {
 
     private List<RecipeIngredientDTO> toRecipeIngredientDTOList(List<RecipeIngredient> ingredients) {
         return ingredients == null ? Collections.emptyList() :
-                ingredients.stream().map(this::toDTO).collect(Collectors.toList());
+                ingredients.stream().map(this::toDTO).toList();
     }
 
     private RecipeIngredientDTO toDTO(RecipeIngredient i) {
@@ -64,7 +62,7 @@ public class RecipeMapper {
 
     private List<RecipeIngredient> toEntityList(List<RecipeIngredientDTO> ingredients) {
         return ingredients == null ? Collections.emptyList() :
-                ingredients.stream().map(this::toEntity).collect(Collectors.toList());
+                ingredients.stream().map(this::toEntity).toList();
     }
 
     private RecipeIngredient toEntity(RecipeIngredientDTO dto) {
@@ -77,11 +75,11 @@ public class RecipeMapper {
 
     public List<RecipeDTO> toDTOList(List<Recipe> recipes) {
         return recipes == null ? Collections.emptyList() :
-                recipes.stream().map(this::toDTO).collect(Collectors.toList());
+                recipes.stream().map(this::toDTO).toList();
     }
 
     public List<IngredientDTO> toIngredientNameDTO(List<String> names) {
         return names.stream()
-                .map(name -> new IngredientDTO().name(name)).collect(toList());
+                .map(name -> new IngredientDTO().name(name)).toList();
     }
 }

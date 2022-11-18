@@ -40,9 +40,9 @@ class RecipesIntegrationTest {
 	private ObjectMapper mapper;
 
 	private final List<Recipe> savedRecipes = List.of(
-			recipe("a"),
-			recipe("b"),
-			recipe("a"));
+			recipe("recipe a"),
+			recipe("recipe b"),
+			recipe("recipe c"));
 
 	@BeforeEach
 	void setUp() {
@@ -75,10 +75,10 @@ class RecipesIntegrationTest {
 	@Test
 	void shouldCreateRecipe() throws Exception {
 		mvc.perform(post("/recipes")
-						.content(mapper.writeValueAsString(recipeDTO("d")))
+						.content(mapper.writeValueAsString(recipeDTO("recipe d")))
 						.contentType(MediaType.APPLICATION_JSON)
 				).andExpect(status().isCreated())
-				.andExpect(jsonPath("$.name", equalTo("d")));
+				.andExpect(jsonPath("$.name", equalTo("recipe d")));
 	}
 
 	@Test

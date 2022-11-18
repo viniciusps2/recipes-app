@@ -74,7 +74,7 @@ class RecipeServiceTest {
         RecipeDTO result = recipeService.update(id, dto);
 
         assertEquals(expected, result);
-        verify(recipeMapper).toEntity(dto, recipe);
+        verify(recipeMapper).updateEntity(dto, recipe);
     }
 
     @Test

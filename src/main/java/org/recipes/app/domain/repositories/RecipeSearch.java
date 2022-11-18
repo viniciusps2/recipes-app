@@ -5,7 +5,6 @@ import org.recipes.app.domain.RecipeType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Builder
 public record RecipeSearch(
@@ -26,7 +25,7 @@ public record RecipeSearch(
         if (list == null || list.isEmpty()) {
             return new ArrayList<>();
         }
-        return list.stream().map(RecipeSearch::sanitizeString).collect(Collectors.toList());
+        return list.stream().map(RecipeSearch::sanitizeString).toList();
     }
 
     private static String sanitizeString(String s) {

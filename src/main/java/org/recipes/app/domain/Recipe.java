@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,11 +44,8 @@ public class Recipe {
         this.id = id;
     }
 
-    public Recipe ingredients(List<RecipeIngredient> ingredients) {
+    public Recipe ingredients(@NotNull List<RecipeIngredient> ingredients) {
         this.ingredients.clear();
-        if (ingredients == null) {
-            return this;
-        }
         this.ingredients.addAll(ingredients);
         this.ingredients.forEach(i -> i.recipe(this));
         return this;

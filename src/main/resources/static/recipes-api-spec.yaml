@@ -172,12 +172,18 @@ components:
           format: uuid
         name:
           type: string
+          minLength: 3
+          maxLength: 30
         recipeType:
           $ref: '#/components/schemas/RecipeType'
         servings:
           type: integer
+          minimum: 1
+          maximum: 10000
         instructions:
           type: string
+          minLength: 3
+          maxLength: 2000
         ingredients:
           type: array
           items:
@@ -186,13 +192,18 @@ components:
     RecipeIngredient:
       title: Recipe Ingredient
       required:
-        - ingredient
+        - name
+        - quantity
+        - unitOfMeasure
       type: object
       properties:
         name:
           type: string
+          minLength: 3
+          maxLength: 50
         quantity:
           type: number
+          maximum: 10000
         unitOfMeasure:
           $ref: '#/components/schemas/UnitOfMeasure'
 

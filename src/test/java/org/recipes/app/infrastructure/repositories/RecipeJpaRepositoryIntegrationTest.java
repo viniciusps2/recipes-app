@@ -12,7 +12,8 @@ import org.recipes.app.domain.RecipeType;
 import org.recipes.app.domain.UnitOfMeasure;
 import org.recipes.app.domain.repositories.RecipeSearch;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
@@ -21,11 +22,13 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@DataJpaTest
 @ActiveProfiles("test")
-class RecipeRepositoryIntegrationTest {
+class RecipeJpaRepositoryIntegrationTest {
     @Autowired
-    private RecipeDataRepository repository;
+    private RecipeJpaRepository repository;
+
+    private final Sort sortByName = Sort.by(Sort.Direction.ASC, "name");
 
     private final List<Recipe> savedRecipes = List.of(
             new Recipe().name("A")
@@ -64,7 +67,7 @@ class RecipeRepositoryIntegrationTest {
     @MethodSource("ingredientsIncludedExpected")
     void shouldMatchIngredientsIncluded(List<String> expected, List<String> ingredientsIncludes) {
         RecipeSearch search = RecipeSearch.builder().ingredientsIncludes(ingredientsIncludes).build();
-        List<Recipe> result = repository.search(search);
+        List<Recipe> result = repository.findAll(new RecipeSearchSpecification(search), sortByName);
         assertEquals(expected, result.stream().map(Recipe::name).collect(toList()),
                 String.format("When including %s the result %s is expected", ingredientsIncludes, expected));
     }
@@ -86,7 +89,7 @@ class RecipeRepositoryIntegrationTest {
     @MethodSource("ingredientsExcludedExpected")
     void shouldMatchIngredientsExcluded(List<String> expected, List<String> ingredientsExcludes) {
         RecipeSearch search = RecipeSearch.builder().ingredientsExcludes(ingredientsExcludes).build();
-        List<Recipe> result = repository.search(search);
+        List<Recipe> result = repository.findAll(new RecipeSearchSpecification(search), sortByName);
         assertEquals(expected, result.stream().map(Recipe::name).collect(toList()),
                 String.format("When excluding %s the result %s is expected", ingredientsExcludes, expected));
     }
@@ -104,7 +107,7 @@ class RecipeRepositoryIntegrationTest {
     @MethodSource("recipeTypeResultsExpected")
     void shouldMatchRecipeType(List<String> expected, RecipeType recipeType) {
         RecipeSearch search = RecipeSearch.builder().recipeType(recipeType).build();
-        List<Recipe> result = repository.search(search);
+        List<Recipe> result = repository.findAll(new RecipeSearchSpecification(search), sortByName);
         assertEquals(expected, result.stream().map(Recipe::name).collect(toList()),
                 String.format("When searching by %s the result %s is expected", recipeType, expected));
     }
@@ -121,7 +124,7 @@ class RecipeRepositoryIntegrationTest {
     @MethodSource("instructionsResultsExpected")
     void shouldMatchInstructions(List<String> expected, String instructions) {
         RecipeSearch search = RecipeSearch.builder().instructionsContains(instructions).build();
-        List<Recipe> result = repository.search(search);
+        List<Recipe> result = repository.findAll(new RecipeSearchSpecification(search), sortByName);
         assertEquals(expected, result.stream().map(Recipe::name).collect(toList()),
                 String.format("When searching by %s the result %s is expected", instructions, expected));
     }
@@ -143,7 +146,7 @@ class RecipeRepositoryIntegrationTest {
     @MethodSource("servingsResultsExpected")
     void shouldMatchServings(List<String> expected, Integer servings) {
         RecipeSearch search = RecipeSearch.builder().servings(servings).build();
-        List<Recipe> result = repository.search(search);
+        List<Recipe> result = repository.findAll(new RecipeSearchSpecification(search), sortByName);
         assertEquals(expected, result.stream().map(Recipe::name).collect(toList()),
                 String.format("When searching by %s the result %s is expected", servings, expected));
     }

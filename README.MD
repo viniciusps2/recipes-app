@@ -24,7 +24,7 @@ This is a Swagger page where you can call the API.
 
 # Testing
 
-Execute in your terminal: `./gradlew build`
+Execute in your terminal: `./gradlew test`
 
 ## Project structure
 
@@ -59,4 +59,14 @@ The application is making use of Open API for API specification and to generate 
 The application provides the following endpoints:
 
 - /recipes: create, update, delete and search recipes
-- /ingredients: loads only ingredients names that can be used on recipes search 
+- /ingredients: loads only ingredients names that can be used on recipes search
+
+Find more details in the [OpenAPI spec here](src/main/resources/static/recipes-api-spec.yaml), or in the Swagger UI by running the application.
+
+## Further improvements
+
+- Use Zalando Problem specification to standardize error responses
+- Configure a database versioning tool (e.g. Flyway)
+- Create CI/CD pipeline to build and deploy the application
+- Use Test Containers to test specific queries running on Postgres
+

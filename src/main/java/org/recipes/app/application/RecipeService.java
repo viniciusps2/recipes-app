@@ -13,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @AllArgsConstructor
@@ -37,7 +34,7 @@ public class RecipeService {
     @Transactional
     public RecipeDTO update(UUID id, RecipeDTO dto) {
         var recipe = findById(id);
-        recipeMapper.toEntity(dto, recipe);
+        recipeMapper.updateEntity(dto, recipe);
         recipeRepository.save(recipe);
         return recipeMapper.toDTO(recipe);
     }

@@ -49,7 +49,7 @@ class RecipeMapperTest {
         var id = UUID.randomUUID();
         var dto = recipeDTO(id);
         var recipe = recipe(id);
-        recipeMapper.toEntity(dto, recipe);
+        recipeMapper.updateEntity(dto, recipe);
         assertThat(recipe).usingRecursiveComparison()
                 .ignoringFields("ingredients.id", "ingredients.recipe.id")
                 .isEqualTo(recipe(id));

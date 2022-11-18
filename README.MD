@@ -20,6 +20,8 @@ In another terminal execute this command:
 
 Open your brower on: http://localhost:8080
 
+This is a Swagger page where you can call the API.
+
 # Testing
 
 Execute in your terminal: `./gradlew build`

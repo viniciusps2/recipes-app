@@ -26,7 +26,9 @@ This is a Swagger page where you can call the API.
 
 Execute in your terminal: `./gradlew build`
 
-# Project structure
+## Project structure
+
+### Clean Architecture
 
 This project was created following a Clean Architecture aproach, where the code is organised in such a way that it encapsulates the business logic to isolate it from external factors.
 
@@ -48,3 +50,13 @@ The following layers was created:
     - configurations
     - rest controllers
 
+### Open API
+
+The application is making use of Open API for API specification and to generate API models that are used in the code base. (DTOs and Controllers Interface)
+
+## API Design
+
+The application provides the following endpoints:
+
+- /recipes: create, update, delete and search recipes
+- /ingredients: loads only ingredients names that can be used on recipes search 

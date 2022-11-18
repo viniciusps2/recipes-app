@@ -1,4 +1,4 @@
-package org.recipes.app.interfaces.rest;
+package org.recipes.app.infrastructure.rest;
 
 import org.recipes.app.domain.Recipe;
 import org.recipes.app.domain.RecipeIngredient;

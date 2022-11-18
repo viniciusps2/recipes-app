@@ -1,4 +1,4 @@
-package org.recipes.app.interfaces.rest;
+package org.recipes.app.infrastructure.rest;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.recipes.app.interfaces.rest.RecipeFixture.recipe;
+import static org.recipes.app.infrastructure.rest.RecipeFixture.recipe;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

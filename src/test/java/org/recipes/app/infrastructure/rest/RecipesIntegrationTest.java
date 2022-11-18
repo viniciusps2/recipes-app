@@ -1,18 +1,11 @@
-package org.recipes.app.interfaces.rest;
+package org.recipes.app.infrastructure.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.recipes.app.domain.Recipe;
-import org.recipes.app.domain.RecipeIngredient;
-import org.recipes.app.domain.RecipeType;
-import org.recipes.app.domain.UnitOfMeasure;
 import org.recipes.app.domain.repositories.RecipeRepository;
-import org.recipes.spec.model.RecipeDTO;
-import org.recipes.spec.model.RecipeIngredientDTO;
-import org.recipes.spec.model.RecipeTypeDTO;
-import org.recipes.spec.model.UnitOfMeasureDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,14 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.recipes.app.interfaces.rest.RecipeFixture.recipe;
-import static org.recipes.app.interfaces.rest.RecipeFixture.recipeDTO;
+import static org.recipes.app.infrastructure.rest.RecipeFixture.recipe;
+import static org.recipes.app.infrastructure.rest.RecipeFixture.recipeDTO;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;

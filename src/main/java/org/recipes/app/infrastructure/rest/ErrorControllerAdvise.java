@@ -1,8 +1,8 @@
-package org.recipes.app.interfaces.rest;
+package org.recipes.app.infrastructure.rest;
 
 import org.recipes.app.application.errors.NotFoundException;
-import org.recipes.app.interfaces.dto.ErrorDTO;
-import org.recipes.app.interfaces.dto.ValidationErrorDTO;
+import org.recipes.app.infrastructure.dto.ErrorDTO;
+import org.recipes.app.infrastructure.dto.ValidationErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

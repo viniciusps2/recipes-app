@@ -1,4 +1,4 @@
-package org.recipes.app.interfaces.dto;
+package org.recipes.app.infrastructure.dto;
 
 import java.util.Map;
 

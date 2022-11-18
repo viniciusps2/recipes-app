@@ -1,4 +1,4 @@
-package org.recipes.app.interfaces.rest;
+package org.recipes.app.infrastructure.rest;
 
 import lombok.AllArgsConstructor;
 import org.recipes.app.application.RecipeService;
